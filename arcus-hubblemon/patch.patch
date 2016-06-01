@@ -1,0 +1,44 @@
+diff -urN hubblemon/collect_client/run_client.py hubblemon/collect_client/run_client.py
+--- hubblemon/collect_client/run_client.py       2016-05-26 22:42:03.563562161 +0000
++++ hubblemon/collect_client/run_client.py      2016-05-26 22:46:13.423565616 +0000
+@@ -21,8 +21,8 @@
+
+ from collect_client import *
+ from client_psutil_plugin import psutil_stat
+-#from client_arcus_plugin import arcus_stat
+-#from client_memcached_plugin import memcached_stat
++from client_arcus_plugin import arcus_stat
++from client_memcached_plugin import memcached_stat
+ #from client_redis_plugin import redis_stat
+ #from client_cubrid_plugin import cubrid_stat
+ #from client_mysql_plugin import mysql_stat
+@@ -42,7 +42,7 @@
+        c = collectd(hostname, server_address, stack=10)
+
+
+-"""
++
+ # arcus stat example
+ arcus = arcus_stat()
+ arcus.auto_register()
+@@ -52,7 +52,7 @@
+ mc = memcached_stat()
+ mc.auto_register()
+ c.plugins.append(mc)
+-
++"""
+ # mysql stat example
+ my = mysql_stat()
+ my.push_db('dbname', 'mysql.sock_path', 'id', 'pw')
+diff -urN hubblemon/common/settings.py hubblemon/common/settings.py
+--- hubblemon/common/settings.py 2016-05-26 22:42:03.571562161 +0000
++++ hubblemon/common/settings.py        2016-05-26 22:44:40.123564326 +0000
+@@ -77,6 +77,8 @@
+ if 'ARCUS_ZK_ADDRESSES' in os.environ:
+     arcus_zk_addrs = os.environ['ARCUS_ZK_ADDRESSES'].split(',')
+
++arcus_zk_addrs.append('localhost:2181')
++
+ '''
+ # example
+ arcus_zk_addrs.append('arcuscloud.yourcompany.com:17288')

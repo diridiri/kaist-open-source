@@ -1,0 +1,31 @@
+diff -urN arcus_web/arcus_web/settings.py arcus_web/arcus_web/settings.py
+--- arcus_web/arcus_web/settings.py        2016-05-28 14:14:59.129530834 +0000
++++ arcus_web/arcus_web/settings.py     2016-05-28 14:23:09.121537609 +0000
+@@ -37,6 +37,7 @@
+     'django.contrib.sessions',
+     'django.contrib.messages',
+     'django.contrib.staticfiles',
++    'webpage',
+ ]
+
+ MIDDLEWARE_CLASSES = [
+@@ -55,7 +56,7 @@
+ TEMPLATES = [
+     {
+         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+-        'DIRS': [],
++        'DIRS': ['/home/arcus/test/arcus_web/webpage/templates'],
+         'APP_DIRS': True,
+         'OPTIONS': {
+             'context_processors': [
+@@ -76,10 +77,15 @@
+
+ DATABASES = {
+     'default': {
+-        'ENGINE': 'django.db.backends.sqlite3',
+-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
++        'ENGINE': 'django.db.backends.sqlite3',
++        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+     }
+ }
++DATABASE_OPTIONS = {"charset" : 'utf8'}
