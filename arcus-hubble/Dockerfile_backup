@@ -18,9 +18,35 @@ RUN adduser arcus sudo
 RUN chown -R arcus:arcus /home/arcus
 
 WORKDIR /home/arcus
+RUN git clone https://github.com/naver/arcus.git
+RUN wget https://bootstrap.pypa.io/get-pip.py
+RUN python3 get-pip.py
+RUN pip3 install django kazoo # rrdtool psutil
 RUN mkdir vendor
 
+RUN apt-get purge openjdk*
+RUN apt-get install -y openjdk-7-jdk
+RUN apt-get install -y ant
 
+# build arcus
+WORKDIR /home/arcus/arcus/scripts
+RUN ./build.sh
+
+# zookeeper settings
+WORKDIR /home/arcus/arcus/zookeeper
+RUN ant compile_jute
+WORKDIR /home/arcus/arcus/zookeeper/src/c
+RUN autoreconf -if
+RUN ./configure --prefix=/home/arcus/arcus
+RUN make && make install
+
+# memcached & zookeeper settings
+WORKDIR /home/arcus/arcus/server
+RUN ./config/autorun.sh
+RUN ./configure --with-libevent=/home/arcus/arcus
+RUN make && make install
+
+WORKDIR /home/arcus
 USER root
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
 RUN apt-get install -y nodejs
