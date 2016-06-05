@@ -11,15 +11,12 @@ RUN rm /usr/bin/python3
 RUN ln -s /usr/bin/python3.4 /usr/bin/python3
 RUN python3 --version
 
-
-
 RUN adduser --disabled-password --gecos '' arcus
 RUN adduser arcus sudo
 RUN chown -R arcus:arcus /home/arcus
 
 WORKDIR /home/arcus
 RUN mkdir vendor
-
 
 USER root
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
@@ -48,7 +45,6 @@ RUN make; make install
 WORKDIR /home/arcus
 ADD arcus_web /home/arcus/arcus_web
 
-
 WORKDIR /home/arcus/vendor
 RUN git clone https://github.com/naver/arcus-hubble.git
 WORKDIR /home/arcus/vendor/arcus-hubble
@@ -59,7 +55,6 @@ RUN mv new.json package.json
 RUN ./setup.sh
 
 ADD clearun.sh /home/arcus/vendor/arcus-hubble/clearun.sh
-ADD clearun_arcus.sh /home/arcus/arcus/scripts/clearun_arcus.sh
 RUN chmod 755 /home/arcus/vendor/arcus-hubble/clearun.sh
 
 RUN chown -R arcus:arcus /home/arcus
