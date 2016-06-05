@@ -11,42 +11,13 @@ RUN rm /usr/bin/python3
 RUN ln -s /usr/bin/python3.4 /usr/bin/python3
 RUN python3 --version
 
-
-
 RUN adduser --disabled-password --gecos '' arcus
 RUN adduser arcus sudo
 RUN chown -R arcus:arcus /home/arcus
 
 WORKDIR /home/arcus
-RUN git clone https://github.com/naver/arcus.git
-RUN wget https://bootstrap.pypa.io/get-pip.py
-RUN python3 get-pip.py
-RUN pip3 install django kazoo # rrdtool psutil
 RUN mkdir vendor
 
-RUN apt-get purge openjdk*
-RUN apt-get install -y openjdk-7-jdk
-RUN apt-get install -y ant
-
-# build arcus
-WORKDIR /home/arcus/arcus/scripts
-RUN ./build.sh
-
-# zookeeper settings
-WORKDIR /home/arcus/arcus/zookeeper
-RUN ant compile_jute
-WORKDIR /home/arcus/arcus/zookeeper/src/c
-RUN autoreconf -if
-RUN ./configure --prefix=/home/arcus/arcus
-RUN make && make install
-
-# memcached & zookeeper settings
-WORKDIR /home/arcus/arcus/server
-RUN ./config/autorun.sh
-RUN ./configure --with-libevent=/home/arcus/arcus
-RUN make && make install
-
-WORKDIR /home/arcus
 USER root
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
 RUN apt-get install -y nodejs
@@ -74,7 +45,6 @@ RUN make; make install
 WORKDIR /home/arcus
 ADD arcus_web /home/arcus/arcus_web
 
-
 WORKDIR /home/arcus/vendor
 RUN git clone https://github.com/naver/arcus-hubble.git
 WORKDIR /home/arcus/vendor/arcus-hubble
@@ -85,7 +55,6 @@ RUN mv new.json package.json
 RUN ./setup.sh
 
 ADD clearun.sh /home/arcus/vendor/arcus-hubble/clearun.sh
-ADD clearun_arcus.sh /home/arcus/arcus/scripts/clearun_arcus.sh
 RUN chmod 755 /home/arcus/vendor/arcus-hubble/clearun.sh
 
 RUN chown -R arcus:arcus /home/arcus
