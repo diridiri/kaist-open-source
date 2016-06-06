@@ -46,11 +46,13 @@ WORKDIR /home/arcus
 ADD arcus_web /home/arcus/arcus_web
 
 WORKDIR /home/arcus/vendor
-RUN git clone https://github.com/naver/arcus-hubble.git
+RUN git clone https://github.com/diridiri/arcus-hubble.git
 WORKDIR /home/arcus/vendor/arcus-hubble
 
 RUN sed 's/"zookeeper": "\*"/"zookeeper": "3.4.1"/g' package.json >>new.json
 RUN mv new.json package.json
+RUN sed 's/export HUBBLE_ZOOKEEPER_HOSTS="10.0.0.1:2181,10.0.0.2:2181,10.0.0.3:2181"/export HUBBLE_ZOOKEEPER_HOSTS="arcus:2181"/g' env.sh >> env_back.sh
+RUN mv env_back.sh env.sh
 
 RUN ./setup.sh
 
