@@ -48,12 +48,17 @@ RUN make && make install
 
 ########## arcus-hubble setting #############
 WORKDIR /home/arcus
-USER root
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
-RUN apt-get install -y nodejs
-WORKDIR /home/arcus/vendor
+#RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
+#RUN apt-get install -y nodejs
+RUN curl -OL http://nodejs.org/dist/v0.10.28/node-v0.10.28-linux-x64.tar.gz
+RUN tar xvf node-v0.10.28-linux-x64.tar.gz
+RUN ln -s node-v0.10.28-linux-x64 node
 
+
+WORKDIR /home/arcus/vendor
 ENV HOME /home/arcus
+ENV NODE_HOME $HOME/node
+ENV PATH $NODE_HOME/bin:$PATH
 
 # rrdtool
 RUN curl -OL http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.4.8.tar.gz

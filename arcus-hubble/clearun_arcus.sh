@@ -1,4 +1,6 @@
-./arcus.sh quicksetup conf/local.sample.json
+export ARCUS_HOME=$HOME/arcus
+
+$ARCUS_HOME/scripts/arcus.sh quicksetup $ARCUS_HOME/scripts/conf/local.sample.json
 #sleep 4
 #~/hubblemon/clearun_hubblemon.sh
 #./arcus.sh deploy conf/local.sample.json
